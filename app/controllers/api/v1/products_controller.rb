@@ -27,7 +27,7 @@ class Api::V1::ProductsController < ApplicationController
 
   def create
     begin
-      @product = Product.new(@create_params)
+      @product = Product.new(@product_params)
       unless @product.save
         return render_api_error(422,@product.errors.to_a.join(","))
       end
@@ -38,7 +38,7 @@ class Api::V1::ProductsController < ApplicationController
   def update
     begin
       @product = Product.find(params[:id].to_i)
-      unless @product.update(@update_params)
+      unless @product.update(@product_params)
         return render_api_error(422,@product.errors.to_a.join(","))
       end
     rescue ActiveRecord::RecordNotFound => e
@@ -59,8 +59,7 @@ class Api::V1::ProductsController < ApplicationController
 
   private
   def product_params
-    @create_params = params.require(:product).permit(:name,:description,:price)
-    @update_params = params.require(:product).permit(:id,:name,:description,:price)
+    @product_params = params.require(:product).permit(:name,:description,:price)
   end
 
 end
